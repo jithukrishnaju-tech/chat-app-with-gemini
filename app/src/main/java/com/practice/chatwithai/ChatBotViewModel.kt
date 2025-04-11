@@ -15,7 +15,7 @@ class ChatBotViewModel : ViewModel() {
     }
     val generativeModel = GenerativeModel(
         modelName = "gemini-1.5-pro-latest",
-        apiKey = Constants.geminiApi
+        apiKey = BuildConfig.API_KEY
     )
 
     fun addData(message: String) {

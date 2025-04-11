@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,7 +10,7 @@ plugins {
 android {
     namespace = "com.practice.chatwithai"
     compileSdk = 35
-
+    android.buildFeatures.buildConfig = true
     defaultConfig {
         applicationId = "com.practice.chatwithai"
         minSdk = 24
@@ -16,6 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", "\"${getApiKeyFromLocalProperties()}\"")
     }
 
     buildTypes {
@@ -37,6 +41,15 @@ android {
     buildFeatures {
         compose = true
     }
+}
+fun getApiKeyFromLocalProperties(): String {
+    val properties = Properties()
+    val localPropertiesFile = File("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { properties.load(it) }
+        return properties.getProperty("apiKey") ?: ""
+    }
+    return ""
 }
 
 dependencies {
